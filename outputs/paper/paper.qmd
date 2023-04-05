@@ -1,0 +1,62 @@
+---
+title: "Analysis of Crime Trends in Toronto"
+author: 
+  - Tayedza Chikumbirike
+thanks: "Code and data are available at: https://github.com/tayedzac/crime.git"
+date: "`r Sys.time()`"
+date-format: "D MMMM YYYY"
+abstract: "The crime rate in Toronto is something that as always fluxated. As a citizen or visitor, it is important to develop an understanding about your safety level. Through exploring data from Open Data Toronto, we find what types of crimes are most common in specific neighborhoods and determine which are the safest."
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+# Introduction
+Crime—the act of completing an offense— has been present in human societies throughout history. Toronto, the largest city in Canada, experiences a wide range of crime-related challenges, including but not limited to violence, property crime, robbery and drug-related offenses. Crime can have a significant impact on individuals, communities, and societies as a whole as this does have a significant impact on public safety, economic prosperity, and social cohesion. Being able to understand the causes and consequences of crime, what types of crimes are more frequent in certain areas, as well as develop effective strategies to prevent crime is extremely critical to ensure public safety. While Toronto's crime rate is relatively low in comparison to other major North American cities, it continues to be a significant issue that requires ongoing attention and action.
+
+The data set used in this paper is obtained from Open Data Toronto and is called Major Crime Indicators. The data explores the following major crime indicators: assault (excluding sexual assault), auto theft, breaking and entering, robbery, and theft over $5000. I am interested in exploring which neighborhood in Toronto has the highest each crime indicator. 
+
+This paper holds a total of 5 sections. In section 2, I explain the data source, methodology, and show the cleaned data set through the use of data tables. Section 3 contains the model of the data set whilst section 4 contains shows the results through the use of graphs. Finally, in section 5 I go into further analysis explaining what the results mean as well as address any weaknesses and next steps.
+
+I use R [@citeR] for all data cleaning and analysis, R packages *tidyverse* [@tidyverse], *janitor* [@janitor], *tidyr* [@tidyr], *dplyr* [@dplyr], and *ggplot* [@ggplot2], to create the figures.
+
+
+# Data {#sec-data}
+
+
+# Model
+
+$$
+ Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}
+$$ {#eq-bayes}
+
+# Results
+
+# Discussion
+
+## Weaknesses and next steps
+
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+\newpage
+
+
+# References
+
+
