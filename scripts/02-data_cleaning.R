@@ -1,26 +1,32 @@
 #### Preamble ####
-# Purpose: Cleans.... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Data: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Cleans the raw data to contain the variables that will be used in the analysis.
+# Author: Tayedza Chikumbirike
+# Data: April 4 2023
+# Contact: t.chikumbirike@mail.utoronto.ca
+# Pre-requisites: Download the data
+# Any other information needed? n/a
 
 
 #### Workspace setup ####
 library(tidyverse)
-# [...UPDATE THIS...]
+library(janitor)
+library(dplyr)
+library(tidyr)
 
 #### Clean data ####
-# [...UPDATE THIS...]
 raw_data <- read_csv("inputs/data/raw_data.csv")
 
-
-
+clean_data <- clean_names(raw_data) |>
+  select(
+    occ_dow,
+    premises_type,
+    offence
+  ) |>
+  drop_na(
+    occ_dow,
+    premises_type,
+    offence)
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change cleaned_data to whatever name you end up with at the end of cleaning
-write_csv(cleaned_data, "outputs/data/cleaned_data.csv")
+write_csv(clean_data, "inputs/data/clean_data.csv")
 
