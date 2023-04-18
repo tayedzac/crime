@@ -19,13 +19,15 @@ raw_data <- read_csv("inputs/data/raw_data.csv")
 clean_data <- clean_names(raw_data) |>
   select(
     occ_dow,
+    occ_year,
     premises_type,
-    offence
+    mci_category
   ) |>
   drop_na(
     occ_dow,
+    occ_year,
     premises_type,
-    offence)
+    mci_category)
 
 #### Save data ####
 write_csv(clean_data, "inputs/data/clean_data.csv")

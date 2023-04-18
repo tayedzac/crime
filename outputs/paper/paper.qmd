@@ -17,7 +17,6 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
 ```
 
 
@@ -32,15 +31,110 @@ I use R [@citeR] for all data cleaning and analysis, R packages *tidyverse* [@ti
 
 
 # Data {#sec-data}
+## Data Source
+The data used in this paper was obtained from Open Data Toronto, which is an official open source of data provided by divisions and agencies throughout Toronto. The Toronto Police Service Public Safety Department collected data in 2014 regarding all Major Crime Indicators (MCI) occurrences. MCI includes crimes such as Assault (excluding sexual assault), Breaking and Entering, Auto Theft, and Theft Over (theft over $5000). @tbl-1 shows the number of occurrences that took place for each MCI category.
+```{r}
+#| echo: false
+#| message: false
+#| tbl-cap: "Number of Occurances per Crime"
+#| label: tbl-1
 
+### Read the data ###
+clean_data <- 
+  read_csv(here::here("inputs/data/clean_data.csv")) %>% 
+  mutate(
+    occ_dow = fct_relevel(
+      occ_dow, 
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    )
+  )
 
-# Model
+num_crimes = count(clean_data, mci_category)
 
-$$
- Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}
-$$ {#eq-bayes}
+table <- knitr::kable(num_crimes, col.names = c("Crime Type", "Number of Occurences"), "simple")
+
+table
+```
+
 
 # Results
+```{r}
+#| label: fig-1
+#| fig-cap: Occurences of the different types of crimes in Toronto.
+#| echo: false
+#| warning: false
+#| message: false
+
+clean_data |>
+  ggplot(aes(x = mci_category)) +
+  geom_bar(fill = "orchid1") +
+  theme_minimal() +
+  labs(x = "Crime Type",
+       y = "Number of Occurences",
+       title = "Different Types of Crimes in Toronto")
+```
+
+```{r}
+#| label: fig-2
+#| fig-cap: Days when crimes most likely took place.
+#| echo: false
+#| warning: false
+#| message: false
+
+clean_data |>
+  ggplot(aes(x = occ_dow)) +
+  geom_bar(fill = "lightblue1") +
+  theme_minimal() +
+  labs(x = "Day of the Week",
+       y = "Number of Occurences",
+       title = "Crime Occurance Day of Week")
+```
+
+
+```{r}
+#| label: fig-3
+#| fig-cap: Premsies types where crimes occured.
+#| echo: false
+#| warning: false
+#| message: false
+
+clean_data |>
+  ggplot(aes(x = premises_type)) +
+  geom_bar(fill = "darkolivegreen1") +
+  theme_minimal() +
+  labs(x = "Premises Type",
+       y = "Number of Occurences",
+       title = "Premises Where Crimes Occured")
+```
+
+
+
+```{r}
+#| label: fig-4
+#| fig-cap: Comparing Crime Type, Premises Type, and Day of Week.
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 6
+#| fig-height: 6
+
+clean_data |>
+  ggplot(aes(x = mci_category, y = premises_type)) +
+  geom_jitter(alpha = 0.1) +
+  theme_minimal() +
+  labs(x = "Crime Type",
+       y = "Premises Type",
+       title = "Relationship Between Crime, Premises, and Day of Week") +
+  facet_wrap(vars(occ_dow),
+             nrow = 4,
+             ncol = 2)
+```
 
 # Discussion
 
