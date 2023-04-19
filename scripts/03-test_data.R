@@ -21,3 +21,6 @@ clean_data$occ_dow |>
 
 clean_data$occ_year |>
   class() == "numeric"
+
+clean_data$occ_year |>
+  max() == 2014
