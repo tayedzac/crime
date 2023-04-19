@@ -31,7 +31,7 @@ For this implementation, we use R [@citeR] for all data cleaning and analysis an
 
 # Data {#sec-data}
 ## Data Source
-The data used in this paper was obtained from Open Data Toronto [@citeTO], which is an official open source of data provided by divisions and agencies throughout Toronto. The Toronto Police Service Public Safety Department collected data in 2014 regarding all Major Crime Indicators (MCI) occurrences. MCI includes crimes such as Assault (excluding sexual assault), Breaking and Entering, Auto Theft, and Theft Over (theft over $5000).
+The data used in this paper was obtained from Open Data Toronto [@citeTO], which is an official open source of data provided by divisions and agencies throughout Toronto. The Toronto Police Service Public Safety Department collected data in 2014 regarding all Major Crime Indicators (MCI) occurrences. MCI includes crimes such as Assault (excluding sexual assault), Breaking and Entering, Auto Theft, Robbery and Theft Over (theft over $5000).
 
 ## Data Cleaning
 Each entry in the dataset contains detailed information regarding the offense. This includes an event id, occurrence date, report date, report time, division ID, offense information, and location information. Through the data cleaning process, we chose to keep the following variables to guide this analysis: occ_dow (occurrence day of the week), premises_type (the premises type), and offense (the offense type). Whilst the original dataset takes into account MCI occurrences that were reported and not found, this analysis primarily focuses on reported occurrences that were found and verified by the Toronto Police.
