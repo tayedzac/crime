@@ -1,15 +1,23 @@
 #### Preamble ####
-# Purpose: Tests... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Data: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
-
+# Purpose: Tests the properties of the dataset
+# Author: Tayedza Chikumbirike
+# Data: 19 April 2023
+# Contact: t.chikumbirike@mail.utoronto.ca
+# Pre-requisites: N/A
+# Any other information needed? N/A
 
 #### Workspace setup ####
 library(tidyverse)
-# [...UPDATE THIS...]
+# Read in data
+clean_data <- 
+  read_csv(here::here("inputs/data/clean_data.csv"))
 
 #### Test data ####
+clean_data$premises_type |>
+  class() == "character"
+
+clean_data$occ_dow |>
+  class() == "character"
+
+clean_data$occ_year |>
+  class() == "numeric"
