@@ -1,11 +1,11 @@
 ---
-title: "Analysis of Crime Trends in Toronto"
+title: "Analysis of Toronto Crime Trends in 2014"
 author: 
   - Tayedza Chikumbirike
 thanks: "Code and data are available at: https://github.com/tayedzac/crime.git"
 date: "`r Sys.time()`"
 date-format: "D MMMM YYYY"
-abstract: "The crime rate in Toronto is something that as always fluxated. As a citizen or visitor, it is important to develop an understanding about your safety level. Through exploring data from Open Data Toronto, we find what types of crimes are most common in specific neighborhoods and determine which are the safest."
+abstract: "In this paper, we are interested in Major Crime Indicators (MCI) occurrences in Toronto. We obtain data on offenses that took place in 2014 from Open Data Toronto which was collected by the Toronto Police Service Public Safety Department. We find the most common MCI occurrence and the relationship between MCI occurrence, premises type, and occurrence day of the week. This work has relevance given the recent increases in criminal offenses in Toronto. It is important to develop an understanding of such data to inform areas of improvement in order to increase levels of safety."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -18,25 +18,30 @@ bibliography: references.bib
 
 library(tidyverse)
 ```
-
-
 # Introduction
-Crime—the act of completing an offense— has been present in human societies throughout history. Toronto, the largest city in Canada, experiences a wide range of crime-related challenges, including but not limited to violence, property crime, robbery and drug-related offenses. Crime can have a significant impact on individuals, communities, and societies as a whole as this does have a significant impact on public safety, economic prosperity, and social cohesion. Being able to understand the causes and consequences of crime, what types of crimes are more frequent in certain areas, as well as develop effective strategies to prevent crime is extremely critical to ensure public safety. While Toronto's crime rate is relatively low in comparison to other major North American cities, it continues to be a significant issue that requires ongoing attention and action.
+Crime—the act of completing an offense— has been present in human societies throughout history. It is a large indicator of societal organization. Toronto, the largest city in Canada, experiences a wide range of crime-related challenges, including but not limited to violence, property crime, robbery, and drug-related offenses. This can have a significant impact on individuals, communities, and societies as a whole as this does have a significant impact on public safety, economic prosperity, and social cohesion. 
 
-The data set used in this paper is obtained from Open Data Toronto and is called Major Crime Indicators. The data explores the following major crime indicators: assault (excluding sexual assault), auto theft, breaking and entering, robbery, and theft over $5000. I am interested in exploring which neighborhood in Toronto has the highest each crime indicator. 
+Being able to understand the causes and consequences of crime, what types of crimes are more frequent in certain areas, locations, and days, as well as develop effective strategies to prevent crime is extremely critical to ensure public safety. While Toronto's crime rate is relatively low in comparison to other major North American cities, it continues to be a significant issue that requires ongoing attention and action. 
 
-This paper holds a total of 5 sections. In section 2, I explain the data source, methodology, and show the cleaned data set through the use of data tables. Section 3 contains the model of the data set whilst section 4 contains shows the results through the use of graphs. Finally, in section 5 I go into further analysis explaining what the results mean as well as address any weaknesses and next steps.
+The ability to analyze data on crime to inform government officials what areas require improvement is crucial and this paper proposes a way for this type of data to be explored. Our findings show that assault is the most common MCI occurrence as there was always a reported incidence every day at every location. We also find that there could be a potential relationship between house auto thefts and house break and enters as the data suggests that these may have occurred at the same time.
 
-I use R [@citeR] for all data cleaning and analysis, R packages *tidyverse* [@tidyverse], *janitor* [@janitor], *tidyr* [@tidyr], *dplyr* [@dplyr], and *ggplot* [@ggplot2], to create the figures.
+This paper holds a total of 4 sections. In section 2, we explore the data source, data cleaning, and data visualization through a series of figures and tables. Section 3 contains a graph displaying how the 3 variables of focus–MCI offense, day of the week, and premises type–interact with each other. Finally, in section 4 we go into further analysis explaining what the results mean as well as addressing any weaknesses and next steps.
 
+For this implementation, we use R [@citeR] for all data cleaning and analysis and use R packages *tidyverse* [@tidyverse], *janitor* [@janitor], *tidyr* [@tidyr], *dplyr* [@dplyr], and *ggplot* [@ggplot2], to create the figures.
 
 # Data {#sec-data}
 ## Data Source
-The data used in this paper was obtained from Open Data Toronto, which is an official open source of data provided by divisions and agencies throughout Toronto. The Toronto Police Service Public Safety Department collected data in 2014 regarding all Major Crime Indicators (MCI) occurrences. MCI includes crimes such as Assault (excluding sexual assault), Breaking and Entering, Auto Theft, and Theft Over (theft over $5000). @tbl-1 shows the number of occurrences that took place for each MCI category.
+The data used in this paper was obtained from Open Data Toronto [@citeTO], which is an official open source of data provided by divisions and agencies throughout Toronto. The Toronto Police Service Public Safety Department collected data in 2014 regarding all Major Crime Indicators (MCI) occurrences. MCI includes crimes such as Assault (excluding sexual assault), Breaking and Entering, Auto Theft, and Theft Over (theft over $5000).
+
+## Data Cleaning
+Each entry in the dataset contains detailed information regarding the offense. This includes an event id, occurrence date, report date, report time, division ID, offense information, and location information. Through the data cleaning process, we chose to keep the following variables to guide this analysis: occ_dow (occurrence day of the week), premises_type (the premises type), and offense (the offense type). Whilst the original dataset takes into account MCI occurrences that were reported and not found, this analysis primarily focuses on reported occurrences that were found and verified by the Toronto Police.
+
+## Data Visualization
+We are interested in exploring the total number of occurrences of each crime, what locations are more likely to have crimes as well as what days of the week crimes take place the most. First, @tbl-1 below shows the number of occurrences that took place for each MCI category.
 ```{r}
 #| echo: false
 #| message: false
-#| tbl-cap: "Number of Occurances per Crime"
+#| tbl-cap: "Number of Occurences per Crime"
 #| label: tbl-1
 
 ### Read the data ###
@@ -57,13 +62,11 @@ clean_data <-
 
 num_crimes = count(clean_data, mci_category)
 
-table <- knitr::kable(num_crimes, col.names = c("Crime Type", "Number of Occurences"), "simple")
+table <- knitr::kable(num_crimes, col.names = c("Crime Type", "Number of Occurrences"), "simple")
 
 table
 ```
-
-
-# Results
+Looking at @tbl-1, the assault category has the most occurrences in Toronto with 16557 offenses in 2014. Breaking and entering is the second most common crime than robbery, auto theft, and theft over follow.
 ```{r}
 #| label: fig-1
 #| fig-cap: Occurences of the different types of crimes in Toronto.
@@ -79,7 +82,8 @@ clean_data |>
        y = "Number of Occurences",
        title = "Different Types of Crimes in Toronto")
 ```
-
+@fig-1 is a graph displaying the values from @tbl-1. The graph demonstrates the drastic difference in the occurrence of assaults in Toronto in comparison to other MCI offenses. By exploring the other variables, we can further understand where and when these occurrences take place.
+\newpage
 ```{r}
 #| label: fig-2
 #| fig-cap: Days when crimes most likely took place.
@@ -92,11 +96,11 @@ clean_data |>
   geom_bar(fill = "lightblue1") +
   theme_minimal() +
   labs(x = "Day of the Week",
-       y = "Number of Occurences",
-       title = "Crime Occurance Day of Week")
+       y = "Number of Occurrences",
+       title = "Crime Occurrence Day of Week")
 ```
-
-
+@fig-2 displays the number of occurrences of crimes in general that took place on specific days. We find that MCI offenses were most common on Fridays and Saturdays with just under 5000 occurrences and Tuesdays and Sundays following with approximately 4500 occurrences. However, there is no drastic difference in occurrences which indicates that an MCI offense was likely to occur every single day in 2014.
+\newpage
 ```{r}
 #| label: fig-3
 #| fig-cap: Premsies types where crimes occured.
@@ -109,12 +113,12 @@ clean_data |>
   geom_bar(fill = "darkolivegreen1") +
   theme_minimal() +
   labs(x = "Premises Type",
-       y = "Number of Occurences",
+       y = "Number of Occurrences",
        title = "Premises Where Crimes Occured")
 ```
+Lastly, @fig-3 explores different types of premises in which crimes take place. Whilst the reports do include specific information in regard to the location where the incidents occurred, the premises types help categorize the locations into general groups which is useful for data collection purposes. The seven categories include apartment, commercial (including hotels, motels, B&B, etc.), educational, house, other (including corporate places, warehouses, etc.),  outside, and transit. The major of MCI occurrences took place outside whilst the least occurrences took place in transit. In the results section of this paper, we visualize how the MCI category, day of the week, and premises type influence each other and go into further analysis in the discussion section.
 
-
-
+# Results
 ```{r}
 #| label: fig-4
 #| fig-cap: Comparing Crime Type, Premises Type, and Day of Week.
@@ -131,25 +135,35 @@ clean_data |>
   labs(x = "Crime Type",
        y = "Premises Type",
        title = "Relationship Between Crime, Premises, and Day of Week") +
+  theme(axis.text.x = element_text(angle = 90)) +
   facet_wrap(vars(occ_dow),
              nrow = 4,
              ncol = 2)
 ```
 
+\newpage
+In this section, we display the relationship between MCI occurrence type, day of the week, and premises type. With @fig-4, we visualize the frequency of these incidences in a more specific context. For example, we see that there are more assault occurrences in educational premises on weekdays in comparison to weekends which makes sense as there are more students and faculty present on those days. Next, we will explore the results of each MCI occurrence in more depth in the discussion section.
+
 # Discussion
+## Assault Analysis
+As seen in both @tbl-1 and @fig-1, assault is the most common MCI occurrence. Referring to @fig-4, there are consistent assaults in apartments every single day of the week. This makes sense because occupancy rates by household during this time consisted of 61.6% of people living in apartments [@apartments]. We find the same consistency when looking at assaults that took place outside and in houses. By looking at the break and enter data, we can infer that there can be a relationship with the house assaults as the points look similar. Interestingly, assaults were less common to take place in transit on weekends than on weekdays. This may be because fewer people are using transit as people won’t need to go to work or school. Overall, assault is likely to be reported in all premise types every day of the week, thus making it the most common MCI offense.
 
-## Weaknesses and next steps
+## Auto Theft Analysis
+Auto theft is the second to least common MCI occurrence in 2014. @fig-4 shows a consistent trend of auto thefts outside every single day. This is due to the fact that cars are more accessible. However, it is also important to note the relationship between house auto thefts and house break and enters as the data suggests that these could have occurred simultaneously. Furthermore, auto thefts almost never occurred on educational premises.
 
+## Break and Enter Analysis
+Break and Enter primarily occurred in apartments, commercial, and houses every day of the week. All other premises are less likely to have a break and enter occurrence because they’re either an institution, transportation, or outdoors. It is also interesting to note the slight increase in break and enter occurrences in educational premises on Fridays. 
+
+## Robbery Analysis
+As the third most common form of crime, robbery almost always occurred outdoors. However, there is still a record of robbery in every premise type every single day. A notable observation is that the second most likely place for robbery to take place every day is commercial. This is due to the fact that the commercial premises are all locations that are easily accessible to the public.
+
+## Theft Over Analysis
+Theft over is the least common MCI occurrence that happened in Toronto at that time. @tbl-1 shows that there was a total of 987 occurrences. Some notable observations seen on @fig-4 are that theft over most commonly took place in commercial premises as well as outdoors. Outdoor theft over was more likely to happen on Fridays and commercial theft over was likely to happen every day but more likely on Tuesdays, Thursdays, and Fridays.
+
+## Weaknesses and Next Steps
+A weakness of this exploration is the dataset is 9 years old. It would be interesting to explore a more recent dataset and see if the patterns remain the same or if there are any major differences. Furthermore, it would be interesting to explore the neighborhoods in which these offenses occurred. This way we can truly develop an understanding of what scenarios would compromise one’s safety.
 
 \newpage
-
-\appendix
-
-# Appendix {-}
-
-
-\newpage
-
 
 # References
 
